@@ -1,29 +1,25 @@
+'use client';
+
 import { Metadata } from 'next';
 import CreditCardDetail from './CreditCardDetail';
 
 export const dynamic = 'force-dynamic';
 
-export async function generateMetadata({ 
-  params,
-}: { 
-  params: { id: string } 
-}): Promise<Metadata> {
+type PageProps = {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   return {
     title: `Credit Card Details - ${params.id}`,
   };
 }
 
-async function getData(id: string) {
-  // This ensures we have a Promise-based data fetch
-  return Promise.resolve({ id });
-}
-
-export default async function Page({ 
-  params,
-}: { 
-  params: { id: string } 
-}) {
-  // Ensure we await the data
-  const data = await getData(params.id);
-  return <CreditCardDetail id={data.id} />;
+export default function Page(props: PageProps) {
+  return (
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <CreditCardDetail id={props.params.id} />
+    </div>
+  );
 } 
